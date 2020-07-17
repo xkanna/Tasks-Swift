@@ -19,4 +19,29 @@ enum Prioritet : Int {
     case osam = 8
     case devet = 9
     case deset = 10
+    
+    func title() -> String {
+        switch self {
+        case .jedan:
+            return "prvi"
+        case .dva:
+            return "drugi"
+        case .tri:
+            return "treci"
+        case .cetiri:
+            return "cetvrti"
+        case .pet:
+            return "peti"
+        case .sest:
+            return "sesti"
+        case .sedam:
+            return "sedmi"
+        case .osam:
+            return "osmi"
+        case .devet:
+            return "deveti"
+        case .deset:
+            return "deseti"
+        }
+    }
 }

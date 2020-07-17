@@ -13,13 +13,15 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
     let tableView = UITableView()
     var task = Task()
     var tasks : [Task] = []
+    var tempTask = Task()
+    var sortingTasks : [Task] = []
     let textFieldIme = UITextField()
     let textFieldPrioritet = UITextField()
     let textFieldBoja = UITextField()
     let textFieldDatum = UITextField()
     let textFieldHitno = UITextField()
     let textFieldFaza = UITextField()
-    let boja = UIView()
+    let bojaView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +50,6 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         firstStack.axis = .horizontal
         firstStack.alignment = .fill
         firstStack.distribution = .fill
-        firstStack.spacing = 20
         
 //stack ime
         
@@ -57,17 +58,15 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         labelIme.translatesAutoresizingMaskIntoConstraints = false
         labelIme.text = "Ime:"
         labelIme.textColor = .black
+        labelIme.leadingAnchor.constraint(equalTo: firstStack.leadingAnchor).isActive = true
         labelIme.heightAnchor.constraint(equalTo: firstStack.heightAnchor).isActive = true
-        labelIme.widthAnchor.constraint(equalTo: firstStack.widthAnchor).isActive = true
         
         
         firstStack.addArrangedSubview(textFieldIme)
         textFieldIme.translatesAutoresizingMaskIntoConstraints = false
         textFieldIme.placeholder = "Imee"
-        textFieldIme.heightAnchor.constraint(equalTo: firstStack.heightAnchor).isActive = true
-        textFieldIme.widthAnchor.constraint(equalTo: firstStack.widthAnchor).isActive = true
         textFieldIme.leadingAnchor.constraint(equalTo: firstStack.leadingAnchor, constant: 40).isActive = true
-//prezime
+//prioritet
         
         let labelPrioritet = UILabel()
         firstStack.addArrangedSubview(labelPrioritet)
@@ -75,7 +74,6 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         labelPrioritet.text = "Prioritet:"
         labelPrioritet.textColor = .black
         labelPrioritet.heightAnchor.constraint(equalTo: firstStack.heightAnchor).isActive = true
-        labelIme.widthAnchor.constraint(equalTo: firstStack.widthAnchor).isActive = true
         labelPrioritet.leadingAnchor.constraint(equalTo: firstStack.leadingAnchor, constant: 150).isActive = true
         
         
@@ -83,7 +81,6 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         textFieldPrioritet.translatesAutoresizingMaskIntoConstraints = false
         textFieldPrioritet.placeholder = "Prioritet"
         textFieldPrioritet.heightAnchor.constraint(equalTo: firstStack.heightAnchor).isActive = true
-        textFieldPrioritet.widthAnchor.constraint(equalTo: firstStack.widthAnchor).isActive = true
         textFieldPrioritet.leadingAnchor.constraint(equalTo: firstStack.leadingAnchor, constant: 240).isActive = true
  //drugi stack
         
@@ -93,22 +90,19 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         secondStack.axis = .horizontal
         secondStack.alignment = .fill
         secondStack.distribution = .fill
-        secondStack.spacing = 20
         
-        let labelBoja = UILabel()
-        secondStack.addArrangedSubview(labelBoja)
-        labelBoja.translatesAutoresizingMaskIntoConstraints = false
-        labelBoja.text = "Boja:"
-        labelBoja.textColor = .black
-        labelBoja.heightAnchor.constraint(equalTo: secondStack.heightAnchor).isActive = true
-        labelBoja.widthAnchor.constraint(equalTo: secondStack.widthAnchor).isActive = true
-        labelBoja.leadingAnchor.constraint(equalTo: secondStack.leadingAnchor).isActive = true
+        let bojaLabel = UILabel()
+        secondStack.addArrangedSubview(bojaLabel)
+        bojaLabel.translatesAutoresizingMaskIntoConstraints = false
+        bojaLabel.text = "Boja:"
+        bojaLabel.textColor = .black
+        bojaLabel.heightAnchor.constraint(equalTo: secondStack.heightAnchor).isActive = true
+        bojaLabel.leadingAnchor.constraint(equalTo: secondStack.leadingAnchor).isActive = true
         
-        secondStack.addArrangedSubview(boja)
-        boja.translatesAutoresizingMaskIntoConstraints = false
-        boja.widthAnchor.constraint(equalToConstant: 10).isActive = true
-        boja.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        boja.leadingAnchor.constraint(equalTo: secondStack.leadingAnchor, constant: 40).isActive = true
+        secondStack.addArrangedSubview(bojaView)
+        bojaView.translatesAutoresizingMaskIntoConstraints = false
+        bojaView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        bojaView.leadingAnchor.constraint(equalTo: secondStack.leadingAnchor, constant: 40).isActive = true
         
 //datum
         let labelDatum = UILabel()
@@ -117,7 +111,6 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         labelDatum.text = "Datum:"
         labelDatum.textColor = .black
         labelDatum.heightAnchor.constraint(equalTo: secondStack.heightAnchor).isActive = true
-        labelDatum.widthAnchor.constraint(equalTo: secondStack.widthAnchor).isActive = true
         labelDatum.leadingAnchor.constraint(equalTo: secondStack.leadingAnchor, constant: 150).isActive = true
         
         
@@ -125,8 +118,7 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         textFieldDatum.translatesAutoresizingMaskIntoConstraints = false
         textFieldDatum.placeholder = "Datuum"
         textFieldDatum.heightAnchor.constraint(equalTo: secondStack.heightAnchor).isActive = true
-        textFieldDatum.widthAnchor.constraint(equalTo: secondStack.widthAnchor).isActive = true
-        textFieldDatum.leadingAnchor.constraint(equalTo: secondStack.leadingAnchor, constant: 250).isActive = true
+        textFieldDatum.leadingAnchor.constraint(equalTo: secondStack.leadingAnchor, constant: 230).isActive = true
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy"
         textFieldDatum.text = formatter.string(from: task.date)
@@ -145,7 +137,6 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         labelHitno.text = "Hitno:"
         labelHitno.textColor = .black
         labelHitno.heightAnchor.constraint(equalTo: thirdStack.heightAnchor).isActive = true
-        labelHitno.widthAnchor.constraint(equalTo: thirdStack.widthAnchor).isActive = true
         labelHitno.leadingAnchor.constraint(equalTo: thirdStack.leadingAnchor).isActive = true
         
         
@@ -153,7 +144,6 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         textFieldHitno.translatesAutoresizingMaskIntoConstraints = false
         textFieldHitno.placeholder = "Hitnoo"
         textFieldHitno.heightAnchor.constraint(equalTo: thirdStack.heightAnchor).isActive = true
-        textFieldHitno.widthAnchor.constraint(equalTo: thirdStack.widthAnchor).isActive = true
         textFieldHitno.leadingAnchor.constraint(equalTo: thirdStack.leadingAnchor, constant: 60).isActive = true
 //faze
         let labelFaza = UILabel()
@@ -162,15 +152,13 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         labelFaza.text = "Faza:"
         labelFaza.textColor = .black
         labelFaza.heightAnchor.constraint(equalTo: thirdStack.heightAnchor).isActive = true
-        labelFaza.widthAnchor.constraint(equalTo: thirdStack.widthAnchor).isActive = true
         labelFaza.leadingAnchor.constraint(equalTo: thirdStack.leadingAnchor, constant: 150).isActive = true
         
         thirdStack.addArrangedSubview(textFieldFaza)
         textFieldFaza.translatesAutoresizingMaskIntoConstraints = false
         textFieldFaza.placeholder = "Hitnoo"
         textFieldFaza.heightAnchor.constraint(equalTo: thirdStack.heightAnchor).isActive = true
-        textFieldFaza.widthAnchor.constraint(equalTo: thirdStack.widthAnchor).isActive = true
-        textFieldFaza.leadingAnchor.constraint(equalTo: thirdStack.leadingAnchor, constant: 250).isActive = true
+        textFieldFaza.leadingAnchor.constraint(equalTo: thirdStack.leadingAnchor, constant: 230).isActive = true
 //table view
         let fourthStack = UIStackView()
         mainStack.addArrangedSubview(fourthStack)
@@ -182,30 +170,42 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         fourthStack.addArrangedSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.heightAnchor.constraint(equalTo: fourthStack.heightAnchor).isActive = true
-        tableView.widthAnchor.constraint(equalTo: fourthStack.widthAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: fourthStack.leadingAnchor).isActive = true
         
         tableView.allowsSelection = false
         
-        let set = [Set.prepare, Set.finish]
-        let set2 = [Set.prepare, Set.run]
+        let set = [Set.prepare, Set.run, Set.empty]
+        let set2 = [Set.prepare, Set.run, Set.finish]
         
         let task1 = Task(ime: "task1", prioritet: Prioritet.cetiri, boja: .red, date: Date(), isUrgent: false, phases: set )
         let task2 = Task(ime: "task2", prioritet: Prioritet.tri, boja: .orange, date: Date(), isUrgent: true, phases: set2)
-        let task3 = Task(ime: "task3", prioritet: Prioritet.devet, boja: .blue, date: Date(), isUrgent: true, phases: set1)
+        let task3 = Task(ime: "task3", prioritet: Prioritet.devet, boja: .blue, date: Date(), isUrgent: false, phases: set)
         let task4 = Task(ime: "task4", prioritet: Prioritet.dva, boja: .orange, date: Date(), isUrgent: true, phases: set2)
-        let task5 = Task(ime: "task5", prioritet: Prioritet.osam, boja: .blue, date: Date(), isUrgent: true, phases: set1)
+        let task5 = Task(ime: "task5", prioritet: Prioritet.osam, boja: .blue, date: Date(), isUrgent: true, phases: set)
+        let task6 = Task(ime: "task6", prioritet: Prioritet.jedan, boja: .red, date: Date(), isUrgent: false, phases: set)
         tasks.append(task1)
         tasks.append(task2)
         tasks.append(task3)
         tasks.append(task4)
         tasks.append(task5)
+        tasks.append(task6)
         
+        sorting()
         
         start()
-        
-        
 
+    }
+    func sorting(){
+        tasks.sort(by: {
+            if $0.isUrgent != $1.isUrgent {
+                return $0.isUrgent && !$1.isUrgent
+            } else if $0.prioritet != $1.prioritet {
+                return $0.prioritet.rawValue < $1.prioritet.rawValue
+            } else if $0.date.compare($1.date) == .orderedDescending {
+                return true
+            }
+            return false
+        })
     }
     @objc func addButtonTapped() {
         let vc = AddTableViewController()
@@ -218,10 +218,10 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         return tasks.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MainTableViewCell.self)) as! MainTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MainTableViewCell.self)) as! MainTableViewCell
         cell.label.text = tasks[indexPath.row].ime
         cell.view.backgroundColor = tasks[indexPath.row].boja
-            return cell
+        return cell
     }
     func start() {
         stage1()
@@ -230,32 +230,40 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
     func stage1(){
         
         Timer.scheduledTimer(withTimeInterval:2, repeats: false) { [weak self] timer in
-            if !self!.tasks.isEmpty{
-            self!.AddToLabels()
-            self!.textFieldFaza.text = "prepare"
-            
-            if(self!.tasks[0].phases[0] == Set.prepare){
-                
-                if(self!.tasks[0].phases[1] == Set.run){
-                    self!.stage2()
-                }
-                if(self!.tasks[0].phases[1] == Set.finish){
-                    self!.stage3()
-                }
+            guard let self = self else {
+                return
             }
-            self!.tasks.remove(at: 0)
-            self!.tableView.reloadData()
-        }
+            
+            if !self.tasks.isEmpty {
+                self.AddToLabels()
+                self.textFieldFaza.text = "prepare"
+                self.tempTask = self.tasks[0]
+                
+                if self.tempTask.phases[0] == Set.prepare {
+                    
+                    if self.tempTask.phases[1] == Set.run {
+                        self.stage2()
+                    }
+                }
+                self.tasks.remove(at: 0)
+                self.tableView.reloadData()
+            } else {
+                self.removeFromLabels()
+            }
         }
     }
+    
     func stage2(){
         
         Timer.scheduledTimer(withTimeInterval:2, repeats: false) { [weak self] timer in
             self!.textFieldFaza.text = "run"
-            self!.stageEnd()
             
+            if self!.tempTask.phases[2] == Set.finish {
+                self!.stage3()
+            } else if self!.tempTask.phases[2] == Set.empty {
+                self!.stageEnd()
+            }
         }
-        
     }
     func stage3(){
         
@@ -266,39 +274,18 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         }
         
     }
+    
     func stageEnd(){
         
         Timer.scheduledTimer(withTimeInterval:1, repeats: false) { [weak self] timer in
+            
             self!.stage1()
         }
-        
     }
     func AddToLabels(){
         textFieldIme.text = tasks[0].ime
-        switch(tasks[0].prioritet){
-        case Prioritet.jedan:
-             textFieldPrioritet.text = "prvi"
-        case Prioritet.dva:
-             textFieldPrioritet.text = "drugi"
-        case Prioritet.tri:
-             textFieldPrioritet.text = "treci"
-        case Prioritet.cetiri:
-             textFieldPrioritet.text = "cetvrti"
-        case Prioritet.pet:
-             textFieldPrioritet.text = "peti"
-        case Prioritet.sest:
-             textFieldPrioritet.text = "sesti"
-        case Prioritet.sedam:
-             textFieldPrioritet.text = "sedmi"
-        case Prioritet.osam:
-             textFieldPrioritet.text = "osmi"
-        case Prioritet.devet:
-             textFieldPrioritet.text = "deveti"
-        case Prioritet.deset:
-             textFieldPrioritet.text = "deseti"
-        }
-        
-        boja.backgroundColor = tasks[0].boja
+        textFieldPrioritet.text = tasks[0].prioritet.title()
+        bojaView.backgroundColor = tasks[0].boja
         
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy"
@@ -310,17 +297,24 @@ class ViewController: UIViewController, UITableViewDelegate,  UITableViewDataSou
         if(tasks[0].isUrgent == false){
             textFieldHitno.text = "ne"
         }
-        
-        
+    }
+    
+    func removeFromLabels(){
+        textFieldIme.text = .none
+        textFieldBoja.backgroundColor = .none
+        textFieldFaza.text = .none
+        textFieldDatum.text = .none
+        textFieldHitno.text = .none
+        textFieldPrioritet.text = .none
     }
 }
+
 extension ViewController: AddTableViewControllerDelegate {
+    
     func done(task: Task) {
         self.task = task
         tasks.append(task)
+        sorting()
         tableView.reloadData()
-        start()
-
     }
 }
-

@@ -42,7 +42,7 @@ class MainTableViewCell: UITableViewCell {
         stack.addArrangedSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.widthAnchor.constraint(equalToConstant: 10).isActive = true
-        view.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        //view.heightAnchor.constraint(equalToConstant: 10).isActive = true
         
         
         

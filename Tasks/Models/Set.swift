@@ -12,4 +12,5 @@ enum Set : Int{
     case prepare = 1
     case run = 2
     case finish = 3
+    case empty = 4
 }

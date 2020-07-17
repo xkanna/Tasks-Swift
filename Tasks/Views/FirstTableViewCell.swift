@@ -37,7 +37,7 @@ class FirstTableViewCell: UITableViewCell {
 
         stack.addArrangedSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
-
+        
         stack.addArrangedSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         
